@@ -1,31 +1,16 @@
 --- dwm.c
 +++ dwm.c
-@@ -194,6 +194,7 @@ static void resizeclient(Client *c, int x, int y, int w, int h);
- static void resizemouse(const Arg *arg);
- static void restack(Monitor *m);
- static void run(void);
-+static void runAutostart(void);
- static void scan(void);
- static int sendevent(Client *c, Atom proto);
- static void sendmon(Client *c, Monitor *m);
-@@ -1386,6 +1387,12 @@ run(void)
+@@ -1720,6 +1721,13 @@ togglefloating(const Arg *arg)
+ 	arrange(selmon);
  }
  
- void
-+runAutostart(void) {
-+	system("cd ~/.dwm; ./autostart_blocking.sh");
-+	system("cd ~/.dwm; ./autostart.sh &");
++void
++togglefullscr(const Arg *arg)
++{
++  if(selmon->sel)
++    setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 +}
 +
-+void
- scan(void)
+ void
+ toggletag(const Arg *arg)
  {
- 	unsigned int i, num;
-@@ -2145,6 +2152,7 @@ main(int argc, char *argv[])
- 	checkotherwm();
- 	setup();
- 	scan();
-+	runAutostart();
- 	run();
- 	cleanup();
- 	XCloseDisplay(dpy);
