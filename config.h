@@ -66,6 +66,7 @@ static const char *dmenucmd[] = {"dmenu_run", "-fn", dmenufont, "-nb",
                                  col_gray1,   "-nf", col_gray3, "-sb",
                                  col_cyan,    "-sf", col_gray4, NULL};
 static const char *termcmd[] = {"st", NULL};
+
 static const char *spotify[] = {"spotify", NULL};
 static const char *nemo[] = {"nemo", NULL};
 static const char *discord[] = {"discord", NULL};
@@ -79,9 +80,12 @@ static const char *downvol[] = {"/usr/bin/pactl", "set-sink-volume",
                                 "@DEFAULT_SINK@", "-5%", NULL};
 static const char *mutevol[] = {"/usr/bin/pactl", "set-sink-mute",
                                 "@DEFAULT_SINK@", "0", NULL};
+#include "movestack.c"
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
+    {MODKEY | ShiftMask, XK_j, movestack, {.i = +1}},
+    {MODKEY | ShiftMask, XK_k, movestack, {.i = -1}},
     {0, XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
     {0, XF86XK_AudioMute, spawn, {.v = mutevol}},
     {0, XF86XK_AudioRaiseVolume, spawn, {.v = upvol}},
@@ -105,6 +109,8 @@ static const Key keys[] = {
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
+    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
+
     {MODKEY, XK_0, view, {.ui = ~0}},
     {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
     {MODKEY, XK_comma, focusmon, {.i = -1}},
